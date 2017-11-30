@@ -1,16 +1,16 @@
 from setuptools import setup, find_packages
 
 setup(name='bwplot',
-      version='0.1.1',
+      version='0.2.2',
       description='A package to prepare a plot for black and white printing',
-      url='',
+      url='https://github.com/eng-tools/bwplot',
       author='Maxim Millen',
       author_email='mmi46@uclive.ac.nz',
       license='MIT',
       classifiers=[
           'Development Status :: 3 - Alpha',
-          'Intended Audience :: Scientific community',
-          'Topic :: Scientific plotting',
+          'Intended Audience :: Science/Research',
+          'Topic :: Scientific/Engineering',
           'License :: OSI Approved :: MIT License',
           'Programming Language :: Python :: 3',
       ],
@@ -24,9 +24,7 @@ setup(name='bwplot',
           'test': ['pytest'],
       },
       python_requires='>=3',
-      package_data={
-          'models': ['models_data.dat'],
-      },
+      package_data={},
       zip_safe=False)
 
 
