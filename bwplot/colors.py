@@ -11,7 +11,7 @@ def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
     Access a modular list of colors for plotting.
     Defines colours using rgb.
     :param i: (int), index to access color
-    :param gray: (bool), if true then color is return as greyscale value
+    :param gray: (bool), if true then color is return as grayscale value
     :param spectrum: (str), choice of spectrum to use
     :param reverse: (bool), reverses the color order
     :param kwargs:
@@ -35,9 +35,9 @@ def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
 
     CD['bluey purple'] = (0.8, 0.85, 1.0)  # 12
 
-    CD['dark grey'] = (0.25, 0.25, 0.25)  #
-    CD['mid grey'] = (0.5, 0.5, 0.5)  #
-    CD['light grey'] = (0.75, 0.75, 0.75)  #
+    CD['dark gray'] = (0.25, 0.25, 0.25)  #
+    CD['mid gray'] = (0.5, 0.5, 0.5)  #
+    CD['light gray'] = (0.75, 0.75, 0.75)  #
     CD['black5'] = (0.05, 0.05, 0.05)  #
     CD['black'] = (0.0, 0.0, 0.0)  #
     CD['white'] = (1.0, 1.0, 1.0)  #
@@ -52,29 +52,29 @@ def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
     if spectrum == "alternate":
         order = ['dark blue', 'orange', 'light blue', 'dark purple', 'dark green',
                  'bluey purple', 'dark red', 'light green', 'pink', 'brown',
-                 'red', 'yellow', 'greenish blue', 'dark grey',
-                 'mid grey', 'light grey']
+                 'red', 'yellow', 'greenish blue', 'dark gray',
+                 'mid gray', 'light gray']
     elif spectrum == "lighten":
         order = ['dark blue', 'dark green', 'dark red', 'brown',
                  'light green', 'orange', 'light blue', 'pink', 'dark purple',
                  'red', 'greenish blue', 'bluey purple', 'yellow',
-                 'dark grey', 'mid grey', 'light grey']
+                 'dark gray', 'mid gray', 'light gray']
     elif spectrum == 'dots':
         order = ['dark blue', 'yellow', 'light blue', 'dark purple', 'dark green', 'orange',
                  'bluey purple', 'dark red', 'light green', 'pink', 'brown',
-                 'red', 'greenish blue', 'dark grey',
-                 'mid grey', 'light grey']
+                 'red', 'greenish blue', 'dark gray',
+                 'mid gray', 'light gray']
     elif spectrum == "traffic":
         order = ['dark green', 'orange', 'red']
     else:  # warnings
-        order = ['light green', 'orangish yellow', 'orange', 'red', 'black', 'dark grey']
+        order = ['light green', 'orangish yellow', 'orange', 'red', 'black', 'dark gray']
 
     index = i % len(order)
     if reverse:
         index = len(order) - index - 1
     rgb = CD[order[index]]
 
-    gray_value = 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]  # calculate the grey scale value
+    gray_value = 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]  # calculate the gray scale value
 
     if gray:
         return gray_value, gray_value, gray_value
@@ -85,13 +85,13 @@ def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
 def spectra(i, **kwargs):
     """
     Define colours by number.
-    Can be plotted either in order of grey scale or in the 'best' order for
-    having a strong grey contrast for only three or four lines
+    Can be plotted either in order of gray scale or in the 'best' order for
+    having a strong gray contrast for only three or four lines
     :param i: the index to access a colour
     """
     ordered = kwargs.get('ordered', False)
     options = kwargs.get('options', 'best')
-    grey = kwargs.get('grey', False)
+    gray = kwargs.get('gray', False)
     CD = {}
     CD['dark blue'] = (1.0, 0.0, 0.55)  # 0
     CD['dark green'] = (0.15, 0.35, 0.0)  # 1
@@ -106,9 +106,9 @@ def spectra(i, **kwargs):
     CD['greenish blue'] = (0.12, .8, .8)  # 10
     CD['bluey purple'] = (0.8, 0.85, 1.0)  # 12
     CD['yellow'] = (1.0, 1.0, 0.0)  # 6
-    CD['dark grey'] = (0.25, 0.25, 0.25)  #
-    CD['mid grey'] = (0.5, 0.5, 0.5)  #
-    CD['light grey'] = (0.75, 0.75, 0.75)  #
+    CD['dark gray'] = (0.25, 0.25, 0.25)  #
+    CD['mid gray'] = (0.5, 0.5, 0.5)  #
+    CD['light gray'] = (0.75, 0.75, 0.75)  #
     CD['black5'] = (0.05, 0.05, 0.05)  #
     CD['black'] = (0.0, 0.0, 0.0)  #
     CD['white'] = (1.0, 1.0, 1.0)  #
@@ -124,15 +124,15 @@ def spectra(i, **kwargs):
     DtoL = ['dark blue', 'dark green', 'dark red', 'brown',
             'light green', 'orange', 'light blue', 'pink', 'dark purple',
             'red', 'greenish blue', 'bluey purple', 'yellow',
-            'dark grey', 'mid grey', 'light grey']
+            'dark gray', 'mid gray', 'light gray']
     Best = ['dark blue', 'orange', 'light blue', 'dark purple', 'dark green',
             'bluey purple', 'dark red', 'light green', 'pink', 'brown',
-            'red', 'yellow', 'greenish blue', 'dark grey',
-            'mid grey', 'light grey']
+            'red', 'yellow', 'greenish blue', 'dark gray',
+            'mid gray', 'light gray']
     Dots = ['dark blue', 'yellow', 'light blue', 'dark purple', 'dark green', 'orange',
             'bluey purple', 'dark red', 'light green', 'pink', 'brown',
-            'red', 'greenish blue', 'dark grey',
-            'mid grey', 'light grey']
+            'red', 'greenish blue', 'dark gray',
+            'mid gray', 'light gray']
     # ll = [0, 5, 2, 4, 1, 6, 3, 7, 8, 11, 9, 12, 10, 13, 14, 15]  # change 11 w 5
 
     ind = i % len(Best)
@@ -151,10 +151,10 @@ def spectra(i, **kwargs):
         dat = CD[DtoL[ind]]
         col = DtoL[ind]
 
-    grey_value = 0.299 * dat[0] + 0.587 * dat[1] + 0.114 * dat[2]  # calculate the grey scale value
+    gray_value = 0.299 * dat[0] + 0.587 * dat[1] + 0.114 * dat[2]  # calculate the gray scale value
 
-    if grey:
-        return grey_value, grey_value, grey_value
+    if gray:
+        return gray_value, gray_value, gray_value
 
     return dat
 
@@ -167,8 +167,8 @@ def spectra(i, **kwargs):
 #         print(ss)
 #         col = cc.to_rgb(ss)
 #         print(col)
-#         grey = 0.299 * col[0] + 0.587 * col[1] + 0.114 * col[2]
-#         print(grey)
+#         gray = 0.299 * col[0] + 0.587 * col[1] + 0.114 * col[2]
+#         print(gray)
 #
 #
 # def plotter():
@@ -190,9 +190,9 @@ def spectra(i, **kwargs):
 #         # plt.plot(a, b + j, c=cbox('red', ordered=True), lw=30)
 #         # plt.plot(a, b + j, c=cbox(j, ordered=True), lw=30)
 #         col = cbox(j, ordered=False)
-#         grey = 0.299 * col[0] + 0.587 * col[1] + 0.114 * col[2]
+#         gray = 0.299 * col[0] + 0.587 * col[1] + 0.114 * col[2]
 #         plt.plot(a, b + j, c=col, lw=30)
 #         d = np.arange(4, 9, 1)
-#         print('grey value: ', grey)
-#         plt.plot(d, b + j, c=(grey, grey, grey), lw=30)
+#         print('gray value: ', gray)
+#         plt.plot(d, b + j, c=(gray, gray, gray), lw=30)
 #     plt.show()
