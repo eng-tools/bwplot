@@ -23,3 +23,9 @@ __author__ = 'maximmillen'
         ``'*'``             star marker
 """
 line_style = "-"
+line_styles = ["-", "--", "-.", ":"]
+
+
+def lsbox(i):
+    indy = i % len(line_styles)
+    return line_styles[indy]
