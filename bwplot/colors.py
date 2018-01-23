@@ -1,9 +1,3 @@
-'''
-Created on Aug 5, 2014
-
-@author: maximmillen
-'''
-
 
 
 def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
