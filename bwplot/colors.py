@@ -32,6 +32,9 @@ def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
     CD['dark gray'] = (0.25, 0.25, 0.25)  #
     CD['mid gray'] = (0.5, 0.5, 0.5)  #
     CD['light gray'] = (0.75, 0.75, 0.75)  #
+    CD['dark grey'] = (0.25, 0.25, 0.25)  #
+    CD['mid grey'] = (0.5, 0.5, 0.5)  #
+    CD['light grey'] = (0.75, 0.75, 0.75)  #
     CD['black5'] = (0.05, 0.05, 0.05)  #
     CD['black'] = (0.0, 0.0, 0.0)  #
     CD['white'] = (1.0, 1.0, 1.0)  #
