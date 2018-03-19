@@ -33,6 +33,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            pip install pytest-circleci
 
       - save_cache:
           paths:
@@ -46,5 +47,5 @@ jobs:
       # https://nose.readthedocs.io
       test:
           override:
-              - py.test
+              - py.test tests
           
