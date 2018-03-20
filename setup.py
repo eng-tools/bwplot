@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = "0.2.17"
+__version__ = "0.2.18"
 
 setup(name='bwplot',
       version=__version__,
