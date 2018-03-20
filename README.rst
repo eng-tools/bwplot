@@ -1,32 +1,35 @@
 [![Build Status](https://travis-ci.org/eng-tools/bwplot.svg?branch=master)](https://travis-ci.org/eng-tools/bwplot)
 [![PyPi version](https://img.shields.io/pypi/v/bwplot.svg)](https://img.shields.io/pypi/v/bwplot.svg)
 
-# README #
+******
+bwplot
+******
 
 This python project contains a simple command to select colours that are distinctly different in both colour and black and white.
 
-### What is this repository for? ###
+How do I get set up?
+====================
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+1. Run ``pip install -r requirements.txt``
 
-### How do I get set up? ###
+Testing
+=======
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Tests are run with pytest
 
-### Contribution guidelines ###
+* Locally run: ``pytest`` on the command line.
 
-* Writing tests
-* Code review
-* Other guidelines
+* Tests are run on every push using travis, see the ``.travis.yml`` file
 
-### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+Deployment
+==========
+
+To deploy the package to pypi.com you need to:
+
+ 1. Push to the *pypi* branch. This executes the tests on circleci.com
+
+ 2. Create a git tag:
+ .. code:: bash
+    git tag 0.5.2 -m "version 0.5.2"
+    git push --tags origin pypi
