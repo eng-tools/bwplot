@@ -1,7 +1,11 @@
 from setuptools import setup, find_packages
 
+about = {}
+with open("__about__.py") as fp:
+    exec(fp.read(), about)
+
 setup(name='bwplot',
-      version='0.2.11',
+      version=about['__version__'],
       description='A package to prepare a plot for black and white printing',
       url='https://github.com/eng-tools/bwplot',
       author='Maxim Millen',
