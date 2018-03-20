@@ -1,8 +1,9 @@
 import subprocess
 
 about = {}
-with open("setup.py") as fp:
+with open("bwplot/__about__.py") as fp:
     exec(fp.read(), about)
+
 
 version = about['__version__']
 
