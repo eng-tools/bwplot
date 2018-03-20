@@ -27,7 +27,7 @@ Deployment
 
 To deploy the package to pypi.com you need to:
 
- 1. Push to the *pypi* branch. This executes the tests on circleci.com
+ 1. Push to the *pypi* branch. This executes the tests on circleci.com [not setup anymore]
 
  2. Create a git tag and push to github, run: ``trigger_deploy.py`` or manually:
 
