@@ -2,9 +2,6 @@ language: python
 python:
   - "2.7"
   - "3.2"
-  - "3.3"
-  - "3.4"
-  - "3.5"
   - "3.5-dev" # 3.5 development branch
   - "3.6"
   - "3.6-dev" # 3.6 development branch
@@ -12,6 +9,11 @@ python:
 # command to install dependencies
 install:
   - pip install -r requirements.txt
+  - pip install coveralls
+  - pip install codecov
+  - pip install pytest-cov
 # command to run tests
 script:
-  - py.test # or py.test for Python versions 3.5 and below
+  - py.test --cov=./
+after_success:
+  - coveralls   # uploads reports to coveralls.io
