@@ -4,6 +4,7 @@ def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
     """
     Access a modular list of colors for plotting.
     Defines colours using rgb.
+
     :param i: (int), index to access color
     :param gray: (bool), if true then color is return as grayscale value
     :param spectrum: (str), choice of spectrum to use
