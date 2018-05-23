@@ -19,8 +19,8 @@
 #
 import os
 import sys
-sys.path.insert(0, '/Users/maximmillen/git/packages/bwplot/')
-
+PACKAGE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, PACKAGE_DIR)
 
 # -- General configuration ------------------------------------------------
 
