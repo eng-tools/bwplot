@@ -1,6 +1,6 @@
 
 
-def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
+def cbox(i, gray=False, spectrum="alternate", reverse=False, as255=False, alpha=None, **kwargs):
     """
     Access a modular list of colors for plotting.
     Defines colours using rgb.
@@ -76,7 +76,11 @@ def cbox(i, gray=False, spectrum="alternate", reverse=False, **kwargs):
 
     if gray:
         return gray_value, gray_value, gray_value
-
+    if as255:
+        rgb = [int(rgb[0] * 255), int(rgb[1] * 255), int(rgb[2] * 255)]
+    if alpha:
+        rgb = list(rgb)
+        rgb.append(alpha)
     return rgb
 
 
