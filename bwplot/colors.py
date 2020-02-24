@@ -198,3 +198,33 @@ def spectra(i, **kwargs):
 #         print('gray value: ', gray)
 #         plt.plot(d, b + j, c=(gray, gray, gray), lw=30)
 #     plt.show()
+
+def red_to_yellow(i, gray=False, reverse=False, as255=False, alpha=None):
+    rgbs = [[167, 44, 24],
+            [175, 65, 33],
+            [186, 90, 44],
+            [195, 114, 56],
+            [206, 141, 69],
+            [217, 168, 83],
+            [230, 197, 98],
+            [242, 224, 112],
+            [253, 250, 125]]
+    ind = i % len(rgbs)
+    if reverse:
+        ind = len(rgbs) - ind - 1
+    rgb = rgbs[ind]
+
+    gray_value = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255  # calculate the gray scale value
+
+    if gray:
+        return gray_value, gray_value, gray_value
+    if not as255:
+        rgb = [float(rgb[0]) / 255, float(rgb[1]) / 255, float(rgb[2]) / 255]
+    if alpha:
+        rgb = list(rgb)
+        rgb.append(alpha)
+    return rgb
+
+
+def get_len_red_to_yellow():
+    return 9
