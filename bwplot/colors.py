@@ -228,3 +228,107 @@ def red_to_yellow(i, gray=False, reverse=False, as255=False, alpha=None):
 
 def get_len_red_to_yellow():
     return 9
+
+
+def get_colors(scheme):
+    if scheme == 'purple2green':
+        rgbs = [
+            [63, 25, 96],
+            [90, 30, 111],
+            [132, 27, 128],
+            [153, 48, 99],
+            [175, 65, 64],
+                [189, 82, 53],
+                [198, 100, 54],
+                [198, 124, 56],
+                [206, 141, 69],
+                [207, 164, 73],
+                [207, 185, 90],
+                [193, 207, 128],
+                [183, 233, 134],
+                [183, 255, 144],
+                ]
+    elif scheme == 'purple2yellow':
+        rgbs = [
+            [73, 15, 96],
+            [70, 44, 159],
+            [113, 62, 146],
+            [173, 74, 126],
+            [195, 102, 120],
+            [234, 129, 87],
+            [250, 165, 62],
+            [250, 202, 72],
+            [251, 238, 95],
+        ]
+    else:
+        raise ValueError("scheme must be 'purple2green', 'purple2yellow'")
+    return rgbs
+
+def color_scheme(scheme, i, gray=False, reverse=False, as255=False, alpha=None):
+
+    rgbs = get_colors(scheme)
+    ind = i % len(rgbs)
+    if reverse:
+        ind = len(rgbs) - ind - 1
+    rgb = rgbs[ind]
+
+    if gray:
+        gray_value = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255  # calculate the gray scale value
+        return gray_value, gray_value, gray_value
+    if not as255:
+        rgb = [float(rgb[0]) / 255, float(rgb[1]) / 255, float(rgb[2]) / 255]
+    if alpha:
+        rgb = list(rgb)
+        rgb.append(alpha)
+    return rgb
+
+
+def get_len_purple_to_green():
+    return 12
+
+
+def show_cbox_in_gray():
+    import numpy as np
+    import matplotlib.pyplot as plt
+    cs = 16
+    for j in range(cs):
+        a = np.arange(0, 5, 1)
+        b = 0.1 * np.ones(5)
+        # plt.plot(a, b + j, c=cbox('red', ordered=True), lw=30)
+        # plt.plot(a, b + j, c=cbox(j, ordered=True), lw=30)
+        col = cbox(j, ordered=False)
+        gray = 0.299 * col[0] + 0.587 * col[1] + 0.114 * col[2]
+        plt.plot(a, b + j, c=col, lw=30)
+        d = np.arange(4, 9, 1)
+        print('gray value: ', gray)
+        plt.plot(d, b + j, c=(gray, gray, gray), lw=30)
+
+    plt.show()
+
+def show_in_gray(scheme):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    rgbs = get_colors(scheme)
+    cs = 16
+    gs = []
+    for j in range(len(rgbs) + 1):
+        a = np.arange(0, 5, 1)
+        b = 0.1 * np.ones(5)
+        # plt.plot(a, b + j, c=cbox('red', ordered=True), lw=30)
+        # plt.plot(a, b + j, c=cbox(j, ordered=True), lw=30)
+        col = color_scheme(scheme, j)
+        gray = 0.299 * col[0] + 0.587 * col[1] + 0.114 * col[2]
+        plt.plot(a, b + j, c=col, lw=30)
+        d = np.arange(4, 9, 1)
+        print('gray value: ', gray)
+        plt.plot(d, b + j, c=(gray, gray, gray), lw=30)
+        plt.plot(gray * 5, j, 'o')
+        gs.append(gray)
+    plt.plot([gs[0] * 5, gs[-2] * 5], [0, len(rgbs) - 1])
+    plt.show()
+
+if __name__ == '__main__':
+    show_in_gray('purple2green')
+    # show_in_gray('purple2yellow')
+    # for i in range(10):
+    #     print(purple_to_green(i, True))

@@ -1,18 +1,23 @@
 marker_styles = [
-    ".",
-    ",",
+    "x",
     "o",
     "v",
+    "*",
     "^",
+    "s",
+    "P",  # bold plus
     "<",
     ">",
-    "1",
-    "2",
-    "3",
-    "4",
-    "s",
+    "D",
+    "1",  # y-symbol
+    "2",  # upside-down y
     "p",
-    "*",
+r'$\clubsuit$',
+r'$\spadesuit$',
+r'$\bigodot$', 
+    r'$\bigotimes$', 
+    r'$\bigoplus$',
+r'$\oslash$'
 ]
 
 
