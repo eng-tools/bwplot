@@ -237,16 +237,16 @@ def get_colors(scheme):
             [100, 32, 111],
             [130, 39, 108],
             [153, 51, 99],  # 3
-            [173, 67, 74],  # 4
-                [184, 89, 58],  # 5
-                [195, 107, 54],  # 6
-                [198, 129, 56],  # 7
+            [173, 68, 74],  # 4
+                [184, 87, 62],  # 5
+                [195, 105, 54],  # 6
+                [198, 126, 56],  # 7
                 [206, 143, 64],  # 8
-                [209, 164, 71],
-                [207, 185, 90],
+                [209, 163, 71],
+                [207, 184, 90],
                 [196, 207, 120],
-                [183, 233, 134],
-                [179, 255, 148],
+                [183, 234, 134],
+                [181, 255, 148],
                 ]
     elif scheme == 'purple2yellow':
         rgbs = [
@@ -263,6 +263,66 @@ def get_colors(scheme):
     else:
         raise ValueError("scheme must be 'purple2green', 'purple2yellow'")
     return rgbs
+
+
+def calc_cmyk_from_rgb(rgb, as255=False):
+    try:
+        import numpy as np
+        rgb_c = np.array(rgb)
+        if as255:
+            rgb_c = rgb_c / 255
+        k = 1 - np.max(rgb_c, axis=0)
+        c = (1 - rgb_c[0] - k) / (1 - k)
+        m = (1 - rgb_c[1] - k) / (1 - k)
+        y = (1 - rgb_c[2] - k) / (1 - k)
+        if as255:
+            return np.array([c, m, y, k]) * 100
+        return np.array([c, m, y, k])
+    except ModuleNotFoundError:
+        rc = rgb[0]
+        gc = rgb[1]
+        bc = rgb[2]
+        if as255:
+            rc /= 255
+            gc /= 255
+            bc /= 255
+        k = 1 - max([rc, gc, bc])
+        c = (1 - rc - k) / (1 - k)
+        m = (1 - gc - k) / (1 - k)
+        y = (1 - bc - k) / (1 - k)
+        if as255:
+            return c * 100, m * 100, y * 100, k * 100
+        return c, m, y, k
+
+
+def calc_rgb_from_cmyk(cmyk, as255=False):
+    try:
+        import numpy as np
+        cmyk_c = np.array(cmyk)
+        if as255:
+            cmyk_c = cmyk_c / 100
+        r = (1 - cmyk_c[0]) * (1 - cmyk_c[3])
+        g = (1 - cmyk_c[1]) * (1 - cmyk_c[3])
+        b = (1 - cmyk_c[2]) * (1 - cmyk_c[3])
+        if as255:
+            return np.array([r, g, b]) * 255
+        return np.array([r, g, b])
+    except ModuleNotFoundError:
+        cc = cmyk[0]
+        mc = cmyk[1]
+        yc = cmyk[2]
+        kc = cmyk[3]
+        if as255:
+            cc /= 100
+            mc /= 100
+            yc /= 100
+            kc /= 100
+        r = (1 - cc) * (1 - kc)
+        g = (1 - mc) * (1 - kc)
+        b = (1 - kc) * (1 - kc)
+        if as255:
+            return r * 255, g * 255, b * 255
+        return r, g, b
 
 def color_by_scheme(scheme, i, gray=False, reverse=False, as255=False, alpha=None):
 
@@ -343,6 +403,8 @@ def color_by_interp(scheme, val, gray=False, reverse=False, as255=False, alpha=N
         return gray_value, gray_value, gray_value
     if not as255:
         rgb = [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255]
+    else:
+        rgb = np.array(rgb, dtype=int)
     if alpha:
         rgb = list(rgb)
         rgb.append(alpha)
@@ -357,18 +419,33 @@ def show_interp_gray_val(scheme):
     grays = color_by_interp(scheme, xs, gray=True)
 
     rgbs = color_by_interp(scheme, xs)
+    cmyks = calc_cmyk_from_rgb(rgbs)
+    rgbs_d = calc_rgb_from_cmyk(cmyks)
     xs *= len(rrr)
+    bf, sps = plt.subplots()
     plt.plot(xs, grays[0])
+    plt.plot(xs[1:], np.diff(grays[0]) * 100)
     plt.plot(xs, rgbs[0], c='r')
     plt.plot(xs, rgbs[1], c='g')
     plt.plot(xs, rgbs[2], c='b')
+    plt.plot(xs, rgbs_d[0], 'r--')
+    plt.plot(xs, rgbs_d[1], 'g--')
+    plt.plot(xs, rgbs_d[2], 'b--')
+    plt.plot(xs, cmyks[0], c='c')
+    plt.plot(xs, cmyks[1], c='m')
+    plt.plot(xs, cmyks[2], c='y')
+    plt.plot(xs, cmyks[3], c='k')
+    sps.xaxis.grid(True)
     plt.show()
 
 
 
 if __name__ == '__main__':
-    show_in_gray('purple2green')
+    # show_in_gray('purple2green')
     show_interp_gray_val('purple2green')
+    # cmyk = calc_cmyk_from_rgb((59, 132, 216), as255=True)
+    # rgb = calc_rgb_from_cmyk(cmyk, as255=True)
+    # print(rgb)
     # show_in_gray('purple2yellow')
     # for i in range(10):
     #     print(purple_to_green(i, True))
