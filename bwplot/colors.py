@@ -233,20 +233,20 @@ def get_len_red_to_yellow():
 def get_colors(scheme):
     if scheme == 'purple2green':
         rgbs = [
-            [63, 25, 96],
-            [90, 30, 111],
-            [132, 27, 128],
-            [153, 48, 99],
-            [175, 65, 64],
-                [189, 82, 53],
-                [198, 100, 54],
-                [198, 124, 56],
-                [206, 141, 69],
-                [207, 164, 73],
+            [73, 23, 118],  # 0
+            [100, 32, 111],
+            [130, 39, 108],
+            [153, 51, 99],  # 3
+            [173, 67, 74],  # 4
+                [184, 89, 58],  # 5
+                [195, 107, 54],  # 6
+                [198, 129, 56],  # 7
+                [206, 143, 64],  # 8
+                [209, 164, 71],
                 [207, 185, 90],
-                [193, 207, 128],
+                [196, 207, 120],
                 [183, 233, 134],
-                [183, 255, 144],
+                [179, 255, 148],
                 ]
     elif scheme == 'purple2yellow':
         rgbs = [
@@ -264,7 +264,7 @@ def get_colors(scheme):
         raise ValueError("scheme must be 'purple2green', 'purple2yellow'")
     return rgbs
 
-def color_scheme(scheme, i, gray=False, reverse=False, as255=False, alpha=None):
+def color_by_scheme(scheme, i, gray=False, reverse=False, as255=False, alpha=None):
 
     rgbs = get_colors(scheme)
     ind = i % len(rgbs)
@@ -316,7 +316,7 @@ def show_in_gray(scheme):
         b = 0.1 * np.ones(5)
         # plt.plot(a, b + j, c=cbox('red', ordered=True), lw=30)
         # plt.plot(a, b + j, c=cbox(j, ordered=True), lw=30)
-        col = color_scheme(scheme, j)
+        col = color_by_scheme(scheme, j)
         gray = 0.299 * col[0] + 0.587 * col[1] + 0.114 * col[2]
         plt.plot(a, b + j, c=col, lw=30)
         d = np.arange(4, 9, 1)
@@ -327,8 +327,48 @@ def show_in_gray(scheme):
     plt.plot([gs[0] * 5, gs[-2] * 5], [0, len(rgbs) - 1])
     plt.show()
 
+
+def color_by_interp(scheme, val, gray=False, reverse=False, as255=False, alpha=None):
+    import numpy as np
+    rgbs = np.array(get_colors(scheme))
+    if reverse:
+        rgbs = rgbs[::-1]
+    xs = np.linspace(0, 1, len(rgbs))
+    r = np.interp(val, xs, rgbs[:, 0])
+    g = np.interp(val, xs, rgbs[:, 1])
+    b = np.interp(val, xs, rgbs[:, 2])
+    rgb = [r, g, b]
+    if gray:
+        gray_value = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255  # calculate the gray scale value
+        return gray_value, gray_value, gray_value
+    if not as255:
+        rgb = [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255]
+    if alpha:
+        rgb = list(rgb)
+        rgb.append(alpha)
+    return rgb
+
+
+def show_interp_gray_val(scheme):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    xs = np.linspace(0, 1, 100)
+    rrr = get_colors(scheme)
+    grays = color_by_interp(scheme, xs, gray=True)
+
+    rgbs = color_by_interp(scheme, xs)
+    xs *= len(rrr)
+    plt.plot(xs, grays[0])
+    plt.plot(xs, rgbs[0], c='r')
+    plt.plot(xs, rgbs[1], c='g')
+    plt.plot(xs, rgbs[2], c='b')
+    plt.show()
+
+
+
 if __name__ == '__main__':
     show_in_gray('purple2green')
+    show_interp_gray_val('purple2green')
     # show_in_gray('purple2yellow')
     # for i in range(10):
     #     print(purple_to_green(i, True))
