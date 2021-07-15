@@ -230,8 +230,16 @@ def get_len_red_to_yellow():
     return 9
 
 
+RED2YELLOW2BLUE_STR = 'red2yellow2blue'
+RED2WHITE2BLUE_STR = 'red2white2blue'
+PURPLE2GREEN_STR = 'purple2green'
+RED2YELLOWWHITE = 'red2yellowwhite'
+
+COLOR_SCHEMES = [RED2YELLOW2BLUE_STR, RED2WHITE2BLUE_STR, PURPLE2GREEN_STR, RED2YELLOWWHITE]
+
+
 def get_colors(scheme):
-    if scheme == 'purple2green':
+    if scheme == PURPLE2GREEN_STR:
         rgbs = [
             [73, 23, 118],  # 0
             [100, 32, 111],
@@ -260,6 +268,88 @@ def get_colors(scheme):
             [250, 202, 72],
             [251, 238, 95],
         ]
+    elif scheme == 'red2yellow':
+        rgbs = [[167, 44, 24],
+                [175, 65, 33],
+                [186, 90, 44],
+                [195, 114, 56],
+                [206, 141, 69],
+                [217, 168, 83],
+                [230, 197, 98],
+                [242, 224, 112],
+                [253, 250, 125],
+                ]
+    elif scheme == 'red2yellowwhite':
+        rgbs = [[167, 44, 24],  # 0
+                [175, 65, 33],  # 1
+                [186, 90, 44],  # 2
+                [195, 114, 56],  # 3
+                [206, 141, 69],  # 4
+                [217, 168, 83],  # 5
+                [230, 197, 98],  # 6
+                [242, 224, 112],  # 7
+                [253, 250, 125],  # 8
+                [250, 250, 240],  # 9
+                ]
+    elif scheme == 'red2yellow2green':
+        rgbs = [[167, 44, 24],  # 9
+                [175, 65, 33],  # 8
+                [186, 90, 44],  # 7
+                [195, 114, 56],  # 6
+                [206, 141, 69],  # 5
+                [217, 168, 83],  # 4
+                [230, 197, 98],  # 3
+                [242, 224, 112],  # 2
+                [253, 250, 125],  # 1
+                [215, 245, 130],
+                [185, 240, 134],
+                [157, 235, 138],
+                [130, 230, 142],
+                ]
+    elif scheme == RED2YELLOW2BLUE_STR:
+        rgbs = [[167, 44, 24],  # 0
+                [175, 65, 33],  # 1
+                [186, 90, 44],  # 2
+                [195, 114, 56],  # 3
+                [206, 141, 69],  # 4
+                [217, 168, 83],  # 5
+                [230, 197, 98],  # 6
+                [242, 224, 112],  # 7
+                [253, 240, 125],  # 8
+                [250, 245, 200],  # centre
+                [233, 254, 210],  # centre
+                [215, 243, 140],  # 8
+                [185, 236, 155],  # 7
+                [157, 229, 170],  # 6
+                [133, 218, 185],  # 5
+                [112, 206, 200],  # 4
+                [93, 193, 215],  # 3
+                [74, 175, 227],  # 2
+                [56, 150, 241],  # 1
+                [40, 120, 253],  # 0
+                ]
+    elif scheme == RED2WHITE2BLUE_STR:
+        rgbs = [[167, 44, 24],  # 0
+                [175, 65, 33],  # 1
+                [186, 90, 44],  # 2
+                [195, 114, 56],  # 3
+                [206, 141, 69],  # 4
+                [217, 168, 83],  # 5
+                [230, 197, 98],  # 6
+                [242, 224, 112],  # 7
+                [253, 240, 125],  # 8
+                [250, 250, 250],  # centre
+                [250, 250, 250],  # centre
+                [215, 243, 140],  # 8
+                [185, 236, 155],  # 7
+                [157, 229, 170],  # 6
+                [133, 218, 185],  # 5
+                [112, 206, 200],  # 4
+                [93, 193, 215],  # 3
+                [74, 175, 227],  # 2
+                [56, 150, 241],  # 1
+                [40, 120, 253],  # 0
+                ]
     else:
         raise ValueError("scheme must be 'purple2green', 'purple2yellow'")
     return rgbs
@@ -410,12 +500,33 @@ def color_by_interp(scheme, val, gray=False, reverse=False, as255=False, alpha=N
         rgb.append(alpha)
     return rgb
 
+def color_by_index(scheme, ind, gray=False, reverse=False, as255=False, alpha=None):
+    import numpy as np
+    rgbs = np.array(get_colors(scheme))
+    if reverse:
+        rgbs = rgbs[::-1]
+
+    rgb = rgbs[ind]
+    if gray:
+        gray_value = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255  # calculate the gray scale value
+        return gray_value, gray_value, gray_value
+    if not as255:
+        rgb = [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255]
+    else:
+        rgb = np.array(rgb, dtype=int)
+    if alpha:
+        rgb = list(rgb)
+        rgb.append(alpha)
+    return rgb
+
 
 def show_interp_gray_val(scheme):
     import numpy as np
     import matplotlib.pyplot as plt
     xs = np.linspace(0, 1, 100)
     rrr = get_colors(scheme)
+    cols = np.array(get_colors(scheme)) / 255
+
     grays = color_by_interp(scheme, xs, gray=True)
 
     rgbs = color_by_interp(scheme, xs)
@@ -423,8 +534,8 @@ def show_interp_gray_val(scheme):
     rgbs_d = calc_rgb_from_cmyk(cmyks)
     xs *= len(rrr)
     bf, sps = plt.subplots()
-    plt.plot(xs, grays[0])
-    plt.plot(xs[1:], np.diff(grays[0]) * 100)
+    plt.plot(xs, grays[0], c=(0.2, 0.2, 0.2))
+    # plt.plot(xs[1:], np.diff(grays[0]) * 100, c=(0.3, 0.3, 0.3), ls='--')
     plt.plot(xs, rgbs[0], c='r')
     plt.plot(xs, rgbs[1], c='g')
     plt.plot(xs, rgbs[2], c='b')
@@ -435,6 +546,14 @@ def show_interp_gray_val(scheme):
     plt.plot(xs, cmyks[1], c='m')
     plt.plot(xs, cmyks[2], c='y')
     plt.plot(xs, cmyks[3], c='k')
+    xs1 = list(xs) + [xs[-1] + 1]
+    rgbs = np.array(rgbs)
+    for i in range(len(xs) - 1):
+        plt.fill_between([xs1[i], xs1[i+1]], [1, 1], [1.2, 1.2], color=rgbs[:, i])
+    xns = np.arange(len(cols) + 1)
+    for i in range(len(cols)):
+        print(cols[i])
+        plt.fill_between([xns[i], xns[i+1]], [1.2, 1.2], [1.4, 1.4], color=cols[i])
     sps.xaxis.grid(True)
     plt.show()
 
@@ -442,7 +561,8 @@ def show_interp_gray_val(scheme):
 
 if __name__ == '__main__':
     # show_in_gray('purple2green')
-    show_interp_gray_val('purple2green')
+    show_interp_gray_val('red2yellow2blue')
+    # show_interp_gray_val('red2yellowwhite')
     # cmyk = calc_cmyk_from_rgb((59, 132, 216), as255=True)
     # rgb = calc_rgb_from_cmyk(cmyk, as255=True)
     # print(rgb)
